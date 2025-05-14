@@ -1,0 +1,6 @@
+path: /home/ayush/catkin_ws/src/Ayush/seg_model/yolo_training_preparation/dataset
+train: images/train
+val: images/val
+test: images/test
+names: 
+  0: box

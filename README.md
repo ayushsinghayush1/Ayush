@@ -1,8 +1,20 @@
-# Robotics Perception Take-Home Task - Depth Map Processing for Pose Estimation
+# Robotics Perception Take-Home Task 
+
+This Document contains both the tasks which is Depth Map Processing for Pose Estimation which is implemented inside the folder `PCL` and Trainig the segmentation model which is implemented inside the folder `seg_model`.
+
+## Depth Map Processing for Pose Estimation (TASK 1)
 
 ## Overview
 
 This document explains the approach taken to estimate the 3D pose of a known box-shaped object from a provided depth map, as part of the Robotics Perception Take-Home Task. The solution utilizes geometric methods in Python with the Open3D library.
+
+## Run
+
+To view the result just run `pcl.py`
+```bash 
+cd PCL
+python3 pcl.py
+``` 
 
 ## Approach
 
@@ -48,7 +60,7 @@ The result is visualized using Open3D, displaying:
 * The segmented and cleaned point cloud representing the box, colored in blue.
 * A red oriented 3D bounding box fitted to the cleaned box point cloud, visually indicating the estimated 3D pose (position and orientation) within the original scene context.
 
-![Detection Result](box_detection.png)
+![Detection Result](PCL/box_detection.png)
 
 ## Parameters Used
 
@@ -58,3 +70,77 @@ The following key parameters were used in the solution:
 * `height_above_plane_threshold`: 0.0003 (meters)
 * `nb_neighbors`: 70
 * `std_ratio`: 0.3
+
+#
+
+# Train segmentation model (TASK 2)
+
+## Objective
+
+Train a segmentation model to detect box-shaped objects in RGB images.
+
+## Environment Setup
+
+It is recommended to train the model within a dedicated Python virtual environment.
+
+**Installation:**
+
+Install the Ultralytics library, which provides the YOLO framework:
+
+```bash 
+pip install ultralytics
+``` 
+[Used YOLO11 segmentation model](https://docs.ultralytics.com/tasks/segment/)
+
+## Model:
+
+This task utilizes the YOLOv11 segmentation model as implemented in the Ultralytics library. For detailed information, refer to the YOLOv11 Segmentation documentation.
+
+## Dataset Preperation
+
+The model was trained on the following publicly available dataset:
+
+[datasetlink](https://universe.roboflow.com/naiworkspace-ljeab/boxes-segmentation-wgjsj/browse?queryText=&pageSize=200&startingIndex=0&browseQuery=true)
+
+
+## Training Configuration
+
+Training parameters and class definitions are managed in the `yolo_training_param.yaml` configuration file. Key training hyperparameters such as epochs, batch size, the specific YOLOv8 model variant, and image size are defined in the `params.yaml` file.
+
+## Training Procedure
+
+To initiate the training process, execute the following command:
+
+```bash 
+cd seg_model/yolo_training_preparation/scripts
+python3 yolo_training.py
+``` 
+
+## Predict
+
+To perform inference on images using the trained model, run the following script:
+
+```bash 
+python3 script/predict_result.py
+``` 
+
+## Result 
+
+The following plots illustrate the training performance and loss function:
+
+![Result](./seg_model/yolo_training_preparation/runs/segment/train/results.png)
+
+The precision-confidence curve is shown below:
+![Precesion](./seg_model/yolo_training_preparation/runs/segment/train/BoxP_curve.png)
+
+## Training Logs and Parameters
+Detailed training logs, including learning rate schedules and the total number of epochs, can be found in the `result.csv` file generated during the training process.
+
+## Validation result
+
+The following images show visualizations of the model's predictions on the validation set, with the predicted masks overlaid on the original images:
+
+![Validation_Result](./seg_model/yolo_training_preparation/runs/segment/train/val_batch0_labels.jpg)
+
+![Validation_Result](./seg_model/yolo_training_preparation/runs/segment/train/val_batch1_labels.jpg)
+
