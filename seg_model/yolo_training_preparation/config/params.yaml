@@ -1,0 +1,6 @@
+yolo_training:
+  model: "yolo11n-seg.yaml"
+  batch_size: 4
+  epochs: 60
+  imgsz: 640 # 1280
+
